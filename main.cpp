@@ -2,12 +2,28 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <fstream>
+#include <sstream>
+
+const char CDfr[] = "uzsakymas.txt";
 
 using namespace std;
 
+bool duomenuNuskaitymas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int &n);
+
 int main() {
 
+const int MAX = 100;
+int n; // irasu kiekis
+
+string Kategorija[MAX];
+string Pavadinimas[MAX];
+double Kaina[MAX];
+int Kiekis[MAX];
+
 int meniuPasirinkimas;
+
+if (duomenuNuskaitymas(Kategorija, Pavadinimas, Kaina, Kiekis, n)) {
 
 do {
 cout << " " << endl;
@@ -100,6 +116,41 @@ switch (meniuPasirinkimas) {
     }
 }
 
-} while (meniuPasirinkimas > 7 || meniuPasirinkimas < 1);
+} while (meniuPasirinkimas != 7);
 
+}
+
+return 0;
+}
+
+bool duomenuNuskaitymas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int &n) {
+
+    ifstream cd(CDfr);
+
+    if (!cd) {
+        cout << "Nepavyko atidaryti failo. Bandykite is naujo." << endl;
+        return false;
+    }
+
+    cd >> n;
+    cd.ignore();
+
+    if (n < 1 || n > 100) {
+        cout << "Neteisingas irasu kiekis. Turi buti nuo 1 iki 100." << endl;
+        return false;
+    }
+
+    for (int i = 0; i < n; i++) {
+        getline(cd, Kategorija[i], ';');
+        getline(cd, Pavadinimas[i], ';');
+        cd >> Kaina[i] >> Kiekis[i];
+        cd.ignore();
+
+        if (!cd) {
+            cout << "Klaida nuskaitant irasa. Bandykite is naujo." << i + 1 << "." << endl;
+            return false;
+        }
+    }
+
+    return true;
 }

@@ -10,6 +10,7 @@ const char CDfr[] = "uzsakymas.txt";
 using namespace std;
 
 bool duomenuNuskaitymas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int &n);
+void KategorijosPasirinkimas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int n, int pasirinktaKategorija);
 
 int main() {
 
@@ -51,15 +52,43 @@ switch (meniuPasirinkimas) {
         cout << "==============================" << endl;
         cout << " " << endl;
 
+        for (int i = 0; i < n; i++){
+            cout << Kategorija[i] << ";"
+            << Pavadinimas[i] << ";"
+            << Kaina[i] << ";"
+            << Kiekis[i] << endl;
+
+            cout << fixed << setprecision(2);
+        }
+
         break;
     }
 
     case 2: {
+
+        int pasirinktaKategorija;
+
         cout << " " << endl;
         cout << "==============================" << endl;
         cout << "PREKIU PERZIUREJIMAS PAGAL KATEGORIJA" << endl;
         cout << "==============================" << endl;
         cout << " " << endl;
+
+        cout << "Pasirinkite kategorija:";
+        cout << "==============================" << endl;
+        cout << "1. Dviraciai" << endl;
+        cout << "2. Dalys" << endl;
+        cout << "3. Aksesuarai" << endl;
+        cout << "==============================" << endl;
+        cout << "Iveskite skaiciu: ";
+        cin >> pasirinktaKategorija;
+
+        if (pasirinktaKategorija < 1 || pasirinktaKategorija > 3) {
+            cout << "Neteisingas kategorijos pasirinkimas." << endl;
+        }
+        else {
+        KategorijosPasirinkimas(Kategorija, Pavadinimas, Kaina, Kiekis, n, pasirinktaKategorija);
+        }
 
         break;
     }
@@ -153,4 +182,19 @@ bool duomenuNuskaitymas(string Kategorija[], string Pavadinimas[], double Kaina[
     }
 
     return true;
+}
+
+void KategorijosPasirinkimas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int n, int pasirinktaKategorija){
+    cout << fixed << setprecision(2);
+    for (int i = 0; i < n; i++) {
+    if ((pasirinktaKategorija == 1 && Kategorija[i] == "Dviraciai") ||
+        (pasirinktaKategorija == 2 && Kategorija[i] == "Dalys") ||
+        (pasirinktaKategorija == 3 && Kategorija[i] == "Aksesuarai")) {
+
+        cout << Kategorija[i] << ";"
+             << Pavadinimas[i] << ";"
+             << Kaina[i] << ";"
+             << Kiekis[i] << endl;
+    }
+}
 }

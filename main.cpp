@@ -93,6 +93,7 @@ switch (meniuPasirinkimas) {
         cout << "2. Dalys" << endl;
         cout << "3. Aksesuarai" << endl;
         cout << "==============================" << endl;
+        cout << " " << endl;
 
         do {
             cout << "Iveskite skaiciu: ";
@@ -105,6 +106,7 @@ switch (meniuPasirinkimas) {
 
             if (pasirinktaKategorija < 1 || pasirinktaKategorija > 3) {
                 cout << "Neteisingas kategorijos pasirinkimas. Bandykite dar karta." << endl;
+                cout << " " << endl;
             }
 
         } while (pasirinktaKategorija < 1 || pasirinktaKategorija > 3);
@@ -124,6 +126,7 @@ switch (meniuPasirinkimas) {
         } else {
 
         cout << fixed << setprecision(2);
+        cout << "==============================" << endl;
         cout << "Moketina suma uz kategorija " << kategorijosPavadinimas<< ": "
              << KategorijosSuma(Kategorija, n, Kaina, Kiekis, kategorijosPavadinimas) << " EUR" << endl;
         }
@@ -344,10 +347,10 @@ bool tinkamaKategorija(string kategorija) {
 }
 
 void lenteleAntraste(ostream &out) {
-    out << left << setw(12) << "Kategorija" << setw(34) << "Pavadinimas"
+    out << left << setw(12) << "Kategorija" << setw(50) << "Pavadinimas"
         << right << setw(10) << "Kaina" << setw(8) << "Kiekis"
         << setw(14) << "Suma" << setw(14) << "Nuolaida" << setw(14) << "Moketina" << endl;
-    out << string(106, '-') << endl;
+    out << string(122, '-') << endl;
 }
 
 void eilutesIsvedimas(ostream &out, string kategorija, string pavadinimas, double kaina, int kiekis) {
@@ -355,7 +358,7 @@ void eilutesIsvedimas(ostream &out, string kategorija, string pavadinimas, doubl
     double nuolaida = eilutesNuolaida(suma, kiekis);
 
     out << fixed << setprecision(2);
-    out << left << setw(12) << kategorija << setw(34) << pavadinimas
+    out << left << setw(12) << kategorija << setw(50) << pavadinimas
         << right << setw(10) << kaina << setw(8) << kiekis
         << setw(14) << suma << setw(14) << nuolaida << setw(14) << suma - nuolaida << endl;
 }
@@ -370,7 +373,7 @@ void ataskaita(ostream &out, string Kategorija[], string Pavadinimas[], double K
     for (int i = 0; i < n; i++) {
         eilutesIsvedimas(out, Kategorija[i], Pavadinimas[i], Kaina[i], Kiekis[i]);
     }
-    out << string(106, '-') << endl;
+    out << string(122, '-') << endl;
     out << endl;
 
     double suma = bendraSumaPriesNuolaidas(Kaina, Kiekis, n);

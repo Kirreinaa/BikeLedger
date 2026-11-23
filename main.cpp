@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -11,6 +10,11 @@ using namespace std;
 
 bool duomenuNuskaitymas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int &n);
 void KategorijosPasirinkimas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int n, int pasirinktaKategorija);
+void KategorijosVienetai(string Kategorija[], int Kiekis[], int n);
+double eilutesSuma(double kaina, int kiekis);
+double eilutesNuolaida(double suma, int kiekis);
+double bendraSumaPriesNuolaidas(double Kaina[], int Kiekis[], int n);
+double bendraNuolaida(double Kaina[], int Kiekis[], int n);
 
 int main() {
 
@@ -41,7 +45,11 @@ cout << "6. Issaugoti ataskaita i faila" << endl;
 cout << "7. Iseiti" << endl;
 
 cout << "Pasirinkite veiksma: ";
-cin >> meniuPasirinkimas;
+if (!(cin >> meniuPasirinkimas)) {
+    cin.clear();
+    cin.ignore(1000, '\n');
+    meniuPasirinkimas = 0;
+}
 
 switch (meniuPasirinkimas) {
 
@@ -99,6 +107,15 @@ switch (meniuPasirinkimas) {
         cout << "VISO UZSAKYMO SUMU PERZIUREJIMAS" << endl;
         cout << "==============================" << endl;
         cout << " " << endl;
+
+        double suma = bendraSumaPriesNuolaidas(Kaina, Kiekis, n);
+        double nuolaida = bendraNuolaida(Kaina, Kiekis, n);
+        double galutine = suma - nuolaida;
+
+        cout << fixed << setprecision(2);
+        cout << "Suma pries nuolaidas:   " << suma << " EUR" << endl;
+        cout << "Bendra nuolaida:        " << nuolaida << " EUR" << endl;
+        cout << "Galutine moketina suma: " << galutine << " EUR" << endl;
 
         break;
     }
@@ -197,4 +214,47 @@ void KategorijosPasirinkimas(string Kategorija[], string Pavadinimas[], double K
              << Kiekis[i] << endl;
     }
 }
+}
+
+void KategorijosVienetai(string Kategorija[], int Kiekis[], int n){
+    int VienetaiNuolaidai = 0;
+
+    for (int i=0; i < n; i++){
+        for (int j=0; j < i; j++){
+        if (Kategorija[i] == Kategorija[j])
+            VienetaiNuolaidai++;
+        }
+    }
+}
+
+// Vienos eilutes suma pries nuolaida: kaina * kiekis
+double eilutesSuma(double kaina, int kiekis) {
+    return kaina * kiekis;
+}
+
+// Vienos eilutes nuolaida: 10 % jei kiekis >= 10, kitaip 0
+double eilutesNuolaida(double suma, int kiekis) {
+    if (kiekis >= 10) {
+        return suma * 0.10;
+    }
+    return 0.0;
+}
+
+// Viso uzsakymo suma pries nuolaidas
+double bendraSumaPriesNuolaidas(double Kaina[], int Kiekis[], int n) {
+    double bendra = 0.0;
+    for (int i = 0; i < n; i++) {
+        bendra += eilutesSuma(Kaina[i], Kiekis[i]);
+    }
+    return bendra;
+}
+
+// Bendra visu eiluciu nuolaidu suma
+double bendraNuolaida(double Kaina[], int Kiekis[], int n) {
+    double nuolaida = 0.0;
+    for (int i = 0; i < n; i++) {
+        double suma = eilutesSuma(Kaina[i], Kiekis[i]);
+        nuolaida += eilutesNuolaida(suma, Kiekis[i]);
+    }
+    return nuolaida;
 }

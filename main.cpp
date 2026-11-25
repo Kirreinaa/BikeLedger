@@ -10,7 +10,7 @@ const char RFfr[] = "ataskaita.txt";
 using namespace std;
 
 bool duomenuNuskaitymas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int &n);
-int KategorijosPasirinkimas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int n, int pasirinktaKategorija);
+int KategorijosPasirinkimas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int n, string pasirinktaKategorija);
 void KategorijosVienetai(string Kategorija[], int Kiekis[], int n);
 double eilutesSuma(double kaina, int kiekis);
 double eilutesNuolaida(double suma, int kiekis);
@@ -36,9 +36,11 @@ int Kiekis[MAX];
 
 int meniuPasirinkimas;
 
+// jeigu reiksme true - vykdyti koda
 if (duomenuNuskaitymas(Kategorija, Pavadinimas, Kaina, Kiekis, n)) {
 
-do {
+// ciklas - vykdyti programa kol meniu pasirinkimas nera 7
+do { // main meniu
 cout << " " << endl;
 cout << "==============================" << endl;
 cout << "DVIRACIU PARDUOTUVE" << endl;
@@ -53,7 +55,8 @@ cout << "6. Issaugoti ataskaita i faila" << endl;
 cout << "7. Iseiti" << endl;
 
 cout << "Pasirinkite veiksma: ";
-if (!(cin >> meniuPasirinkimas)) {
+// jeigu pasirinktas veiksmas nera tinkamas pragrama prasys ivesti veiksma is naujo
+if (!(cin >> meniuPasirinkimas)) { 
     cin.clear();
     cin.ignore(1000, '\n');
     meniuPasirinkimas = 0;
@@ -61,14 +64,16 @@ if (!(cin >> meniuPasirinkimas)) {
 
 switch (meniuPasirinkimas) {
 
-    case 1: {
+    // pirmas pasirinkimas - perziureti visas uzsakymo prekes
+    case 1: { 
         cout << " " << endl;
         cout << "==============================" << endl;
         cout << "UZSAKYMO PREKIU PERZIUREJIMAS" << endl;
         cout << "==============================" << endl;
         cout << " " << endl;
 
-        lenteleAntraste(cout);
+        lenteleAntraste(cout); // isvedama lenteles antraste
+        // ciklas lenteles isvedimui per funkcija
         for (int i = 0; i < n; i++){
             eilutesIsvedimas(cout, Kategorija[i], Pavadinimas[i], Kaina[i], Kiekis[i]);
         }
@@ -76,6 +81,7 @@ switch (meniuPasirinkimas) {
         break;
     }
 
+    // antras pasirinkimas - vartotojui pasirinkus kategorija isvedamos prekes su pasirinkta kategorija
     case 2: {
 
         int pasirinktaKategorija;
@@ -95,7 +101,7 @@ switch (meniuPasirinkimas) {
         cout << "==============================" << endl;
         cout << " " << endl;
 
-        do {
+        do { // ciklas kol pasirinkta kategorija nera tinkama prasoma ivesti is naujo
             cout << "Iveskite skaiciu: ";
 
             if (!(cin >> pasirinktaKategorija)) {
@@ -109,6 +115,7 @@ switch (meniuPasirinkimas) {
                 cout << " " << endl;
             }
 
+        // kai ivedama tinkama kategorija pasirinktam skaiciui uzrasomas kategorijos pavadinimas
         } while (pasirinktaKategorija < 1 || pasirinktaKategorija > 3);
 
         if (pasirinktaKategorija == 1){
@@ -119,7 +126,7 @@ switch (meniuPasirinkimas) {
             kategorijosPavadinimas = "Aksesuarai";
         }
 
-        int rasta = KategorijosPasirinkimas(Kategorija, Pavadinimas, Kaina, Kiekis, n, pasirinktaKategorija);
+        int rasta = KategorijosPasirinkimas(Kategorija, Pavadinimas, Kaina, Kiekis, n, kategorijosPavadinimas);
 
         if (rasta == 0) {
             cout << "Atsiprasome, bet sios kategorijos prekiu nerasta." << endl;
@@ -127,14 +134,14 @@ switch (meniuPasirinkimas) {
 
         cout << fixed << setprecision(2);
         cout << "==============================" << endl;
-        cout << "Moketina suma uz kategorija " << kategorijosPavadinimas<< ": "
+        cout << "Moketina suma uz kategorija" << kategorijosPavadinimas<< ": "
              << KategorijosSuma(Kategorija, n, Kaina, Kiekis, kategorijosPavadinimas) << " EUR" << endl;
         }
 
         break;
     }
 
-    case 3: {
+    case 3: { // bendros sumos pries nuolaida, nuolaidos suma ir galutine kaina uz uzsakyma
         cout << " " << endl;
         cout << "==============================" << endl;
         cout << "VISO UZSAKYMO SUMU PERZIUREJIMAS" << endl;
@@ -153,7 +160,7 @@ switch (meniuPasirinkimas) {
         break;
     }
 
-    case 4: {
+    case 4: { // isvedamos sumos uz kiekviena kategorija
         cout << " " << endl;
         cout << "==============================" << endl;
         cout << "SUMU PERZIUREJIMAS PAGAL KATEGORIJAS" << endl;
@@ -163,13 +170,13 @@ switch (meniuPasirinkimas) {
         cout << fixed << setprecision(2);
 
         cout << "Dviraciai:  " << KategorijosSuma(Kategorija, n, Kaina, Kiekis, "Dviraciai") << " EUR"<< endl;
-        cout << "Dalys:      " <<KategorijosSuma(Kategorija, n, Kaina, Kiekis, "Dalys") << " EUR"<< endl;
-        cout << "Aksesuarai: " <<KategorijosSuma(Kategorija, n, Kaina, Kiekis, "Aksesuarai") << " EUR" << endl;
+        cout << "Dalys:      " << KategorijosSuma(Kategorija, n, Kaina, Kiekis, "Dalys") << " EUR"<< endl;
+        cout << "Aksesuarai: " << KategorijosSuma(Kategorija, n, Kaina, Kiekis, "Aksesuarai") << " EUR" << endl;
 
         break;
     }
 
-    case 5: {
+    case 5: { // 
         cout << " " << endl;
         cout << "==============================" << endl;
         cout << "VISO UZSAKYMO ATASKAITA" << endl;
@@ -263,23 +270,21 @@ bool duomenuNuskaitymas(string Kategorija[], string Pavadinimas[], double Kaina[
     return true;
 }
 
-int KategorijosPasirinkimas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int n, int pasirinktaKategorija){
+int KategorijosPasirinkimas(string Kategorija[], string Pavadinimas[], double Kaina[], int Kiekis[], int n, string pasirinktaKategorija){
     int rasta = 0;
     cout << fixed << setprecision(2);
+    // ciklas nuskaitymui prekiu su pasirinktos kategorijos parametru
     for (int i = 0; i < n; i++) {
-    if ((pasirinktaKategorija == 1 && Kategorija[i] == "Dviraciai") ||
-        (pasirinktaKategorija == 2 && Kategorija[i] == "Dalys") ||
-        (pasirinktaKategorija == 3 && Kategorija[i] == "Aksesuarai")) {
+        if (Kategorija[i] == pasirinktaKategorija) {
 
-        if (rasta == 0) {
-            lenteleAntraste(cout);
+            if (rasta == 0) {
+                lenteleAntraste(cout);
+            }
+
+            eilutesIsvedimas(cout, Kategorija[i], Pavadinimas[i], Kaina[i], Kiekis[i]);
+            rasta++;
         }
-
-        eilutesIsvedimas(cout, Kategorija[i], Pavadinimas[i], Kaina[i], Kiekis[i]);
-
-        rasta++;
     }
-}
 
     return rasta;
 }
@@ -304,8 +309,9 @@ double eilutesSuma(double kaina, int kiekis) {
 double eilutesNuolaida(double suma, int kiekis) {
     if (kiekis >= 10) {
         return suma * 0.10;
+    } else {
+        return 0.0;
     }
-    return 0.0;
 }
 
 // Viso uzsakymo suma pries nuolaidas
@@ -327,7 +333,7 @@ double bendraNuolaida(double Kaina[], int Kiekis[], int n) {
     return nuolaida;
 }
 
-
+// kaina, kuria reikia sumoketi (pasirinkus perziureti tam tikra kategorija)
 double KategorijosSuma(string Kategorija[], int n, double Kaina[], int Kiekis[], string kategorija){
     double bendra = 0.0;
 
@@ -346,10 +352,12 @@ bool tinkamaKategorija(string kategorija) {
     return kategorija == "Dviraciai" || kategorija == "Dalys" || kategorija == "Aksesuarai";
 }
 
+// lenteles antrastes isvedimas ekrane su paskirtais tarpais
 void lenteleAntraste(ostream &out) {
     out << left << setw(12) << "Kategorija" << setw(50) << "Pavadinimas"
         << right << setw(10) << "Kaina" << setw(8) << "Kiekis"
         << setw(14) << "Suma" << setw(14) << "Nuolaida" << setw(14) << "Moketina" << endl;
+    // 12 + 50 + 10 + 8 + 14 + 14 + 14 = 122 bruksniai
     out << string(122, '-') << endl;
 }
 
@@ -358,6 +366,8 @@ void eilutesIsvedimas(ostream &out, string kategorija, string pavadinimas, doubl
     double nuolaida = eilutesNuolaida(suma, kiekis);
 
     out << fixed << setprecision(2);
+
+    // lygiavimas: tekstas - kaireje, skaiciai - desineje
     out << left << setw(12) << kategorija << setw(50) << pavadinimas
         << right << setw(10) << kaina << setw(8) << kiekis
         << setw(14) << suma << setw(14) << nuolaida << setw(14) << suma - nuolaida << endl;
@@ -368,13 +378,14 @@ void ataskaita(ostream &out, string Kategorija[], string Pavadinimas[], double K
 
     out << "DVIRACIU PARDUOTUVES UZSAKYMO ATASKAITA" << endl;
     out << endl;
-
+    // antraste
     lenteleAntraste(out);
+    // duomenys apie prekes
     for (int i = 0; i < n; i++) {
         eilutesIsvedimas(out, Kategorija[i], Pavadinimas[i], Kaina[i], Kiekis[i]);
     }
-    out << string(122, '-') << endl;
-    out << endl;
+    out << string(122, '-') << endl; // atskiriamoji linija
+    out << endl; // tuscia eilute
 
     double suma = bendraSumaPriesNuolaidas(Kaina, Kiekis, n);
     double nuolaida = bendraNuolaida(Kaina, Kiekis, n);
